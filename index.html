@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NZXT Kraken Display</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Consolas', monospace;
+      background-color: #000;
+      color: #ffd700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      border: 2px solid #ffd700;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 15px #ffd70055;
+    }
+
+    .title {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
+
+    .metric {
+      font-size: 1.1em;
+      margin: 5px 0;
+    }
+
+    .gear {
+      font-size: 2.5em;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="gear">⚙️</div>
+    <div class="title">AI Compiler Dashboard</div>
+    <div class="metric" id="cpu-temp">CPU: -- °C</div>
+    <div class="metric" id="gpu-temp">GPU: -- °C</div>
+    <div class="metric" id="ram-usage">RAM: -- %</div>
+  </div>
+
+  <script>
+    window.nzxt = {
+      v1: {
+        onMonitoringDataUpdate: (data) => {
+          const cpuTemp = data.cpus?.[0]?.temperature ?? '--';
+          const gpuTemp = data.gpus?.[0]?.temperature ?? '--';
+          const ramUsage = data.ram?.[0]?.usagePercent ?? '--';
+
+          document.getElementById('cpu-temp').textContent = `CPU: ${cpuTemp} °C`;
+          document.getElementById('gpu-temp').textContent = `GPU: ${gpuTemp} °C`;
+          document.getElementById('ram-usage').textContent = `RAM: ${ramUsage} %`;
+        }
+      }
+    };
+  </script>
+</body>
+</html>
